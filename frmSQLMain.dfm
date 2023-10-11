@@ -519,7 +519,7 @@ object SQLForm: TSQLForm
       StyleDisabled.LookAndFeel.ScrollbarMode = sbmClassic
       StyleFocused.LookAndFeel.ScrollbarMode = sbmClassic
       StyleHot.LookAndFeel.ScrollbarMode = sbmClassic
-      TabOrder = 0
+      TabOrder = 3
       Width = 153
     end
     object cxLabel1: TcxLabel
@@ -543,7 +543,7 @@ object SQLForm: TSQLForm
       StyleDisabled.LookAndFeel.ScrollbarMode = sbmClassic
       StyleFocused.LookAndFeel.ScrollbarMode = sbmClassic
       StyleHot.LookAndFeel.ScrollbarMode = sbmClassic
-      TabOrder = 2
+      TabOrder = 5
       Width = 153
     end
     object cxLabel3: TcxLabel
@@ -562,7 +562,7 @@ object SQLForm: TSQLForm
       Width = 32
       Height = 21
       Caption = '+'
-      TabOrder = 4
+      TabOrder = 7
       OnClick = brnCadastroBasesClick
     end
     object btnExecutar: TcxButton
@@ -573,7 +573,7 @@ object SQLForm: TSQLForm
       Anchors = [akTop, akRight]
       Caption = 'Execute'
       LookAndFeel.ScrollbarMode = sbmClassic
-      TabOrder = 5
+      TabOrder = 8
       OnClick = btnExecutarClick
     end
     object cbCampo: TCheckBox
@@ -582,7 +582,7 @@ object SQLForm: TSQLForm
       Width = 76
       Height = 17
       Caption = 'Show Fields'
-      TabOrder = 6
+      TabOrder = 9
     end
     object btnMostraCampos: TBitBtn
       Left = 1032
@@ -590,7 +590,7 @@ object SQLForm: TSQLForm
       Width = 97
       Height = 25
       Caption = 'mostra campos'
-      TabOrder = 7
+      TabOrder = 10
       Visible = False
       OnClick = btnMostraCamposClick
     end
@@ -598,6 +598,8 @@ object SQLForm: TSQLForm
       Left = 2
       Top = 48
       Anchors = [akTop, akBottom]
+      Constraints.MaxWidth = 650
+      Constraints.MinWidth = 420
       Properties.ScrollBars = ssVertical
       Properties.WantTabs = True
       Properties.WordWrap = False
@@ -605,10 +607,10 @@ object SQLForm: TSQLForm
       StyleDisabled.LookAndFeel.ScrollbarMode = sbmClassic
       StyleFocused.LookAndFeel.ScrollbarMode = sbmClassic
       StyleHot.LookAndFeel.ScrollbarMode = sbmClassic
-      TabOrder = 8
+      TabOrder = 0
       OnKeyUp = memSQL1KeyUp
       Height = 66
-      Width = 427
+      Width = 425
     end
     object cxButton1: TcxButton
       Left = 705
@@ -617,13 +619,14 @@ object SQLForm: TSQLForm
       Height = 25
       Caption = '+ Ver Base de dados configuradas'
       LookAndFeel.ScrollbarMode = sbmClassic
-      TabOrder = 9
+      TabOrder = 11
       OnClick = cxButton1Click
     end
     object memSQL2: TcxMemo
       Left = 434
       Top = 48
       Anchors = [akTop, akBottom]
+      Constraints.MinWidth = 427
       Properties.ScrollBars = ssVertical
       Properties.WantTabs = True
       Properties.WordWrap = False
@@ -631,7 +634,7 @@ object SQLForm: TSQLForm
       StyleDisabled.LookAndFeel.ScrollbarMode = sbmClassic
       StyleFocused.LookAndFeel.ScrollbarMode = sbmClassic
       StyleHot.LookAndFeel.ScrollbarMode = sbmClassic
-      TabOrder = 10
+      TabOrder = 1
       OnKeyUp = memSQL1KeyUp
       Height = 66
       Width = 427
@@ -647,7 +650,7 @@ object SQLForm: TSQLForm
       StyleDisabled.LookAndFeel.ScrollbarMode = sbmClassic
       StyleFocused.LookAndFeel.ScrollbarMode = sbmClassic
       StyleHot.LookAndFeel.ScrollbarMode = sbmClassic
-      TabOrder = 11
+      TabOrder = 2
       OnKeyUp = memSQL1KeyUp
       Height = 66
       Width = 427

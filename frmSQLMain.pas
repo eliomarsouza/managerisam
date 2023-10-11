@@ -226,11 +226,15 @@ end;
 
 procedure TSQLForm.FormResize(Sender: TObject);
 begin
-  btnAdd.Left        := memSQL1.Left;
-  ckbBloqueado1.Left := memSQL1.Left+88;
-  btnClear.Left      := memSQL1.Left+41;
-  btnGuardar1.Left   := memSQL1.Left+353;
-  btnApagarTag1.Left := memSQL1.Left+256;
+  memSQL1.Left  := 2;
+
+  memSQL1.Width := (memSQL2.Left- memSQL1.Left)-10;///
+
+  memSQL2.Left  := memSQL1.Left+memSQL1.Width+10;
+  memSQL2.Width := (memSQL3.Left- memSQL2.Left)-10;
+
+  memSQL3.Width := (Self.Width-(memSQL1.Width+memSQL2.Width))-50;
+  memSQL3.Left  := (memSQL1.Width+memSQL2.Width)+20;
 
   btnAdd2.Left        := memSQL2.Left;
   ckbBloqueado2.Left := memSQL2.Left+88;
@@ -240,8 +244,17 @@ begin
   ckbBloqueado3.Left := memSQL3.Left+88;
   btnClear3.Left      := memSQL3.Left+41;
 
+  //*****
+  memSQL1.Width := (memSQL2.Left- memSQL1.Left)-10;
 
+  btnAdd.Left        := memSQL1.Left;
+  ckbBloqueado1.Left := memSQL1.Left+88;
+  btnClear.Left      := memSQL1.Left+41;
 
+  btnGuardar1.Left   := (memSQL1.Left+memSQL1.width)-btnGuardar1.width;
+  btnApagarTag1.Left := (memSQL1.Left+memSQL1.Width)-(btnApagarTag1.width+btnGuardar1.width)-5;
+
+  Caption := IntToStr(memSQL1.Width);
 end;
 
 procedure TSQLForm.FormShow(Sender: TObject);
