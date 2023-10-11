@@ -3,7 +3,7 @@ object SQLForm: TSQLForm
   Top = 0
   Caption = 'SQL Manager - DBISAM - An'#225'lise 3X - Vs.: 1.0'
   ClientHeight = 777
-  ClientWidth = 1299
+  ClientWidth = 1307
   Color = clBtnFace
   Constraints.MinWidth = 1315
   Font.Charset = DEFAULT_CHARSET
@@ -20,11 +20,11 @@ object SQLForm: TSQLForm
   OnShow = FormShow
   PixelsPerInch = 96
   DesignSize = (
-    1299
+    1307
     777)
   TextHeight = 13
   object cxLabel2: TcxLabel
-    Left = 925
+    Left = 933
     Top = 750
     Anchors = [akRight, akBottom]
     AutoSize = False
@@ -35,9 +35,10 @@ object SQLForm: TSQLForm
     StyleHot.LookAndFeel.ScrollbarMode = sbmClassic
     Properties.Alignment.Horz = taRightJustify
     Transparent = True
+    ExplicitLeft = 925
     Height = 17
     Width = 368
-    AnchorX = 1293
+    AnchorX = 1301
   end
   object TreeView1: TTreeView
     Left = 416
@@ -51,7 +52,7 @@ object SQLForm: TSQLForm
   object cxPageControl1: TcxPageControl
     Left = 0
     Top = 154
-    Width = 1299
+    Width = 1307
     Height = 623
     Align = alClient
     TabOrder = 2
@@ -59,29 +60,32 @@ object SQLForm: TSQLForm
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.ScrollbarMode = sbmClassic
     OnChange = cxPageControl1Change
+    ExplicitWidth = 1299
     ClientRectBottom = 619
     ClientRectLeft = 4
-    ClientRectRight = 1295
+    ClientRectRight = 1303
     ClientRectTop = 24
     object cxTabSheet1: TcxTabSheet
       Caption = ' Dados '
       ImageIndex = 0
+      ExplicitWidth = 1291
       object cxTab3: TcxTabControl
         Left = 0
         Top = 471
-        Width = 1291
+        Width = 1299
         Height = 124
         Align = alClient
         Constraints.MinHeight = 82
         TabOrder = 0
         Properties.CustomButtons.Buttons = <>
         LookAndFeel.ScrollbarMode = sbmClassic
+        ExplicitWidth = 1291
         DesignSize = (
-          1291
+          1299
           124)
         ClientRectBottom = 120
         ClientRectLeft = 4
-        ClientRectRight = 1287
+        ClientRectRight = 1295
         ClientRectTop = 4
         object labBase3: TcxLabel
           Left = 3
@@ -99,7 +103,7 @@ object SQLForm: TSQLForm
         object DBGrid3: TDBGrid
           Left = 3
           Top = 27
-          Width = 1286
+          Width = 1294
           Height = 96
           Anchors = [akLeft, akTop, akRight, akBottom]
           Constraints.MaxHeight = 300
@@ -123,7 +127,7 @@ object SQLForm: TSQLForm
           Transparent = True
         end
         object Button6: TButton
-          Left = 1121
+          Left = 1129
           Top = 3
           Width = 160
           Height = 20
@@ -131,26 +135,28 @@ object SQLForm: TSQLForm
           Caption = 'Consulta SQL R'#225'pida'
           TabOrder = 3
           OnClick = Button6Click
+          ExplicitLeft = 1121
         end
       end
       object cxTab1_2: TcxTabControl
         Left = 0
         Top = 0
-        Width = 1291
+        Width = 1299
         Height = 463
         Align = alTop
         Constraints.MaxHeight = 500
         TabOrder = 1
         Properties.CustomButtons.Buttons = <>
         LookAndFeel.ScrollbarMode = sbmClassic
+        ExplicitWidth = 1291
         ClientRectBottom = 459
         ClientRectLeft = 4
-        ClientRectRight = 1287
+        ClientRectRight = 1295
         ClientRectTop = 4
         object cxTab1: TcxTabControl
           Left = 4
           Top = 4
-          Width = 1283
+          Width = 1291
           Height = 202
           Align = alTop
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -159,17 +165,18 @@ object SQLForm: TSQLForm
           TabOrder = 0
           Properties.CustomButtons.Buttons = <>
           LookAndFeel.ScrollbarMode = sbmClassic
+          ExplicitWidth = 1283
           DesignSize = (
-            1283
+            1291
             202)
           ClientRectBottom = 198
           ClientRectLeft = 4
-          ClientRectRight = 1279
+          ClientRectRight = 1287
           ClientRectTop = 4
           object DBGrid1: TDBGrid
             Left = 3
             Top = 26
-            Width = 1274
+            Width = 1282
             Height = 170
             Anchors = [akLeft, akTop, akRight, akBottom]
             Constraints.MaxHeight = 300
@@ -206,7 +213,7 @@ object SQLForm: TSQLForm
             Transparent = True
           end
           object Button5: TButton
-            Left = 1118
+            Left = 1126
             Top = 3
             Width = 160
             Height = 20
@@ -214,12 +221,13 @@ object SQLForm: TSQLForm
             Caption = 'Consulta SQL R'#225'pida'
             TabOrder = 3
             OnClick = Button5Click
+            ExplicitLeft = 1118
           end
         end
         object cxTab2: TcxTabControl
           Left = 4
           Top = 214
-          Width = 1283
+          Width = 1291
           Height = 245
           Align = alClient
           Constraints.MaxHeight = 253
@@ -227,17 +235,18 @@ object SQLForm: TSQLForm
           TabOrder = 1
           Properties.CustomButtons.Buttons = <>
           LookAndFeel.ScrollbarMode = sbmClassic
+          ExplicitWidth = 1283
           DesignSize = (
-            1283
+            1291
             245)
           ClientRectBottom = 241
           ClientRectLeft = 4
-          ClientRectRight = 1279
+          ClientRectRight = 1287
           ClientRectTop = 4
           object DBGrid2: TDBGrid
             Left = 3
             Top = 23
-            Width = 1280
+            Width = 1288
             Height = 216
             Anchors = [akLeft, akTop, akRight, akBottom]
             Constraints.MaxHeight = 300
@@ -274,7 +283,7 @@ object SQLForm: TSQLForm
             Transparent = True
           end
           object Button1: TButton
-            Left = 1116
+            Left = 1124
             Top = 1
             Width = 160
             Height = 20
@@ -282,39 +291,43 @@ object SQLForm: TSQLForm
             Caption = 'Consulta SQL R'#225'pida'
             TabOrder = 3
             OnClick = Button1Click
+            ExplicitLeft = 1116
           end
         end
         object cxSplitter2: TcxSplitter
           Left = 4
           Top = 206
-          Width = 1283
+          Width = 1291
           Height = 8
           HotZoneClassName = 'TcxMediaPlayer9Style'
           AlignSplitter = salTop
           AutoPosition = False
           InvertDirection = True
+          ExplicitWidth = 1283
         end
       end
       object cxSplitter1: TcxSplitter
         Left = 0
         Top = 463
-        Width = 1291
+        Width = 1299
         Height = 8
         HotZoneClassName = 'TcxMediaPlayer9Style'
         AlignSplitter = salTop
         InvertDirection = True
+        ExplicitWidth = 1291
       end
     end
     object cxTabSheet2: TcxTabSheet
       Caption = ' Campos '
       ImageIndex = 1
+      ExplicitWidth = 1291
       DesignSize = (
-        1291
+        1299
         595)
       object DBGrid4: TDBGrid
         Left = 2
         Top = 18
-        Width = 1205
+        Width = 1213
         Height = 180
         Anchors = [akLeft, akTop, akRight]
         DataSource = dsCampos1
@@ -364,7 +377,7 @@ object SQLForm: TSQLForm
       object DBGrid5: TDBGrid
         Left = 0
         Top = 204
-        Width = 1205
+        Width = 1213
         Height = 180
         Anchors = [akLeft, akTop, akRight]
         DataSource = dsCampos2
@@ -410,7 +423,7 @@ object SQLForm: TSQLForm
       object DBGrid6: TDBGrid
         Left = 2
         Top = 390
-        Width = 1204
+        Width = 1212
         Height = 200
         Anchors = [akLeft, akTop, akRight, akBottom]
         DataSource = dsCampos3
@@ -453,7 +466,7 @@ object SQLForm: TSQLForm
           end>
       end
       object Button2: TButton
-        Left = 1211
+        Left = 1219
         Top = 18
         Width = 75
         Height = 25
@@ -461,9 +474,10 @@ object SQLForm: TSQLForm
         Caption = 'Script'
         TabOrder = 3
         OnClick = Button2Click
+        ExplicitLeft = 1211
       end
       object Button3: TButton
-        Left = 1211
+        Left = 1219
         Top = 263
         Width = 75
         Height = 25
@@ -471,9 +485,10 @@ object SQLForm: TSQLForm
         Caption = 'Script'
         TabOrder = 4
         OnClick = Button3Click
+        ExplicitLeft = 1211
       end
       object Button4: TButton
-        Left = 1211
+        Left = 1219
         Top = 508
         Width = 75
         Height = 25
@@ -481,30 +496,32 @@ object SQLForm: TSQLForm
         Caption = 'Script'
         TabOrder = 5
         OnClick = Button4Click
+        ExplicitLeft = 1211
       end
     end
   end
   object cxTabCab: TcxTabControl
     Left = 0
     Top = 0
-    Width = 1299
+    Width = 1307
     Height = 146
     Align = alTop
     Constraints.MinHeight = 101
     TabOrder = 3
     Properties.CustomButtons.Buttons = <>
     LookAndFeel.ScrollbarMode = sbmClassic
+    ExplicitWidth = 1299
     DesignSize = (
-      1299
+      1307
       146)
     ClientRectBottom = 142
     ClientRectLeft = 4
-    ClientRectRight = 1295
+    ClientRectRight = 1303
     ClientRectTop = 4
     object ImageFilosoft: TImage
       Left = 3
       Top = 3
-      Width = 182
+      Width = 158
       Height = 43
       Center = True
       IncrementalDisplay = True
@@ -512,7 +529,7 @@ object SQLForm: TSQLForm
       Transparent = True
     end
     object cbxTabela: TcxComboBox
-      Left = 384
+      Left = 361
       Top = 21
       Properties.DropDownRows = 15
       Style.LookAndFeel.ScrollbarMode = sbmClassic
@@ -520,10 +537,10 @@ object SQLForm: TSQLForm
       StyleFocused.LookAndFeel.ScrollbarMode = sbmClassic
       StyleHot.LookAndFeel.ScrollbarMode = sbmClassic
       TabOrder = 3
-      Width = 153
+      Width = 145
     end
     object cxLabel1: TcxLabel
-      Left = 385
+      Left = 362
       Top = 1
       Caption = 'Table'
       Style.LookAndFeel.ScrollbarMode = sbmClassic
@@ -533,7 +550,7 @@ object SQLForm: TSQLForm
       Transparent = True
     end
     object cbxBase: TcxComboBox
-      Left = 192
+      Left = 169
       Top = 21
       Properties.DropDownRows = 15
       Properties.Items.Strings = (
@@ -547,7 +564,7 @@ object SQLForm: TSQLForm
       Width = 153
     end
     object cxLabel3: TcxLabel
-      Left = 193
+      Left = 170
       Top = 1
       Caption = 'Base Name'
       Style.LookAndFeel.ScrollbarMode = sbmClassic
@@ -557,7 +574,7 @@ object SQLForm: TSQLForm
       Transparent = True
     end
     object brnCadastroBases: TButton
-      Left = 346
+      Left = 323
       Top = 21
       Width = 32
       Height = 21
@@ -566,7 +583,7 @@ object SQLForm: TSQLForm
       OnClick = brnCadastroBasesClick
     end
     object btnExecutar: TcxButton
-      Left = 1218
+      Left = 1226
       Top = 17
       Width = 75
       Height = 25
@@ -575,10 +592,11 @@ object SQLForm: TSQLForm
       LookAndFeel.ScrollbarMode = sbmClassic
       TabOrder = 8
       OnClick = btnExecutarClick
+      ExplicitLeft = 1218
     end
     object cbCampo: TCheckBox
-      Left = 543
-      Top = 22
+      Left = 520
+      Top = 2
       Width = 76
       Height = 17
       Caption = 'Show Fields'
@@ -595,7 +613,7 @@ object SQLForm: TSQLForm
       OnClick = btnMostraCamposClick
     end
     object memSQL1: TcxMemo
-      Left = 2
+      Left = 3
       Top = 48
       Anchors = [akTop, akBottom]
       Constraints.MaxWidth = 650
@@ -609,12 +627,13 @@ object SQLForm: TSQLForm
       StyleHot.LookAndFeel.ScrollbarMode = sbmClassic
       TabOrder = 0
       OnKeyUp = memSQL1KeyUp
+      ExplicitLeft = 2
       Height = 66
       Width = 425
     end
     object cxButton1: TcxButton
-      Left = 705
-      Top = 17
+      Left = 832
+      Top = 19
       Width = 194
       Height = 25
       Caption = '+ Ver Base de dados configuradas'
@@ -623,7 +642,7 @@ object SQLForm: TSQLForm
       OnClick = cxButton1Click
     end
     object memSQL2: TcxMemo
-      Left = 434
+      Left = 438
       Top = 48
       Anchors = [akTop, akBottom]
       Constraints.MinWidth = 427
@@ -636,11 +655,12 @@ object SQLForm: TSQLForm
       StyleHot.LookAndFeel.ScrollbarMode = sbmClassic
       TabOrder = 1
       OnKeyUp = memSQL1KeyUp
+      ExplicitLeft = 434
       Height = 66
       Width = 427
     end
     object memSQL3: TcxMemo
-      Left = 867
+      Left = 874
       Top = 48
       Anchors = [akTop, akBottom]
       Properties.ScrollBars = ssVertical
@@ -652,12 +672,13 @@ object SQLForm: TSQLForm
       StyleHot.LookAndFeel.ScrollbarMode = sbmClassic
       TabOrder = 2
       OnKeyUp = memSQL1KeyUp
+      ExplicitLeft = 867
       Height = 66
       Width = 427
     end
     object DBGrid7: TDBGrid
-      Left = 705
-      Top = 42
+      Left = 832
+      Top = 50
       Width = 229
       Height = 31
       DataSource = DScdsConfiguracao
@@ -707,41 +728,42 @@ object SQLForm: TSQLForm
           Visible = True
         end>
     end
-    object btnAdd: TcxButton
-      Left = 2
-      Top = 115
-      Width = 33
-      Height = 25
-      Anchors = [akRight, akBottom]
-      Caption = 'Add'
-      LookAndFeel.ScrollbarMode = sbmClassic
-      TabOrder = 13
-      OnClick = btnAddClick
-    end
     object btnClear: TcxButton
-      Left = 41
+      Left = 49
       Top = 115
       Width = 33
       Height = 25
       Anchors = [akRight, akBottom]
       Caption = 'Novo'
       LookAndFeel.ScrollbarMode = sbmClassic
-      TabOrder = 14
+      TabOrder = 13
       OnClick = btnClearClick
+      ExplicitLeft = 41
     end
-    object btnAdd2: TcxButton
-      Left = 434
+    object btnAdic2: TcxButton
+      Left = 615
+      Top = 19
+      Width = 96
+      Height = 25
+      Caption = 'Adiciona SQL 2'
+      LookAndFeel.ScrollbarMode = sbmClassic
+      TabOrder = 14
+      OnClick = btnAdic2Click
+    end
+    object btnClear2: TcxButton
+      Left = 481
       Top = 115
       Width = 33
       Height = 25
       Anchors = [akRight, akBottom]
-      Caption = 'Add'
+      Caption = 'Novo'
       LookAndFeel.ScrollbarMode = sbmClassic
       TabOrder = 15
-      OnClick = btnAdd2Click
+      OnClick = btnClear2Click
+      ExplicitLeft = 473
     end
-    object btnClear2: TcxButton
-      Left = 473
+    object btnClear3: TcxButton
+      Left = 913
       Top = 115
       Width = 33
       Height = 25
@@ -749,62 +771,54 @@ object SQLForm: TSQLForm
       Caption = 'Novo'
       LookAndFeel.ScrollbarMode = sbmClassic
       TabOrder = 16
-      OnClick = btnClear2Click
+      OnClick = btnClear3Click
+      ExplicitLeft = 905
     end
-    object btnClear3: TcxButton
-      Left = 905
-      Top = 115
-      Width = 33
+    object btnAdic3: TcxButton
+      Left = 717
+      Top = 19
+      Width = 96
       Height = 25
-      Anchors = [akRight, akBottom]
-      Caption = 'Novo'
+      Caption = 'Adiciona SQL 3'
       LookAndFeel.ScrollbarMode = sbmClassic
       TabOrder = 17
-      OnClick = btnClear3Click
-    end
-    object btnAdd3: TcxButton
-      Left = 866
-      Top = 115
-      Width = 33
-      Height = 25
-      Anchors = [akRight, akBottom]
-      Caption = 'Add'
-      LookAndFeel.ScrollbarMode = sbmClassic
-      TabOrder = 18
-      OnClick = btnAdd3Click
+      OnClick = btnAdic3Click
     end
     object ckbBloqueado3: TCheckBox
-      Left = 952
+      Left = 960
       Top = 120
       Width = 97
       Height = 17
       Anchors = [akRight, akBottom]
       Caption = 'Bloqueado'
-      TabOrder = 19
+      TabOrder = 18
       OnClick = ckbBloqueado3Click
+      ExplicitLeft = 952
     end
     object ckbBloqueado2: TCheckBox
-      Left = 512
+      Left = 520
       Top = 121
       Width = 97
       Height = 17
       Anchors = [akRight, akBottom]
       Caption = 'Bloqueado'
-      TabOrder = 20
+      TabOrder = 19
       OnClick = ckbBloqueado2Click
+      ExplicitLeft = 512
     end
     object ckbBloqueado1: TCheckBox
-      Left = 88
+      Left = 96
       Top = 120
       Width = 97
       Height = 17
       Anchors = [akRight, akBottom]
       Caption = 'Bloqueado'
-      TabOrder = 21
+      TabOrder = 20
       OnClick = ckbBloqueado1Click
+      ExplicitLeft = 88
     end
     object btnGuardar1: TcxButton
-      Left = 353
+      Left = 361
       Top = 115
       Width = 75
       Height = 25
@@ -813,30 +827,43 @@ object SQLForm: TSQLForm
       DropDownMenu = PopupMenu
       Kind = cxbkDropDownButton
       LookAndFeel.ScrollbarMode = sbmClassic
-      TabOrder = 22
+      TabOrder = 21
       OnClick = btnGuardar1Click
+      ExplicitLeft = 353
     end
     object btnApagarTag1: TcxButton
-      Left = 256
+      Left = 264
       Top = 115
       Width = 91
       Height = 25
       Anchors = [akRight, akBottom]
       Caption = 'Apagar nada'
       LookAndFeel.ScrollbarMode = sbmClassic
-      TabOrder = 23
+      TabOrder = 22
       OnClick = btnApagarTag1Click
+      ExplicitLeft = 256
+    end
+    object btnAdic1: TcxButton
+      Left = 513
+      Top = 19
+      Width = 96
+      Height = 25
+      Caption = 'Adiciona SQL 1'
+      LookAndFeel.ScrollbarMode = sbmClassic
+      TabOrder = 23
+      OnClick = btnAdic1Click
     end
   end
   object cxSplitter3: TcxSplitter
     Left = 0
     Top = 146
-    Width = 1299
+    Width = 1307
     Height = 8
     HotZoneClassName = 'TcxMediaPlayer9Style'
     AlignSplitter = salTop
     AutoPosition = False
     InvertDirection = True
+    ExplicitWidth = 1299
   end
   object DBISAMDatabase1: TDBISAMDatabase
     EngineVersion = '4.40 Build 1'

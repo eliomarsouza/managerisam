@@ -122,12 +122,11 @@ type
     memSQL3: TcxMemo;
     DBGrid7: TDBGrid;
     ImageFilosoft: TImage;
-    btnAdd: TcxButton;
     btnClear: TcxButton;
-    btnAdd2: TcxButton;
+    btnAdic2: TcxButton;
     btnClear2: TcxButton;
     btnClear3: TcxButton;
-    btnAdd3: TcxButton;
+    btnAdic3: TcxButton;
     ckbBloqueado3: TCheckBox;
     ckbBloqueado2: TCheckBox;
     ckbBloqueado1: TCheckBox;
@@ -145,11 +144,12 @@ type
     PopupMenu: TPopupMenu;
     cdsMenuSQLTag: TIntegerField;
     btnApagarTag1: TcxButton;
+    btnAdic1: TcxButton;
     procedure FormShow(Sender: TObject);
     procedure Action1Execute(Sender: TObject);
     procedure brnCadastroBasesClick(Sender: TObject);
     procedure btnExecutarClick(Sender: TObject);
-    procedure btnAddClick(Sender: TObject);
+    procedure btnAdic1Click(Sender: TObject);
     procedure btnMostraCamposClick(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
@@ -170,8 +170,8 @@ type
     procedure SaveAs1Click(Sender: TObject);
     procedure OpenDefault1Click(Sender: TObject);
     procedure Resetnajabela1Click(Sender: TObject);
-    procedure btnAdd2Click(Sender: TObject);
-    procedure btnAdd3Click(Sender: TObject);
+    procedure btnAdic2Click(Sender: TObject);
+    procedure btnAdic3Click(Sender: TObject);
     procedure btnClear2Click(Sender: TObject);
     procedure ckbBloqueado3Click(Sender: TObject);
     procedure ckbBloqueado2Click(Sender: TObject);
@@ -237,25 +237,21 @@ begin
   memSQL3.Width := (Self.Width-(memSQL1.Width+memSQL2.Width))-50;
   memSQL3.Left  := (memSQL1.Width+memSQL2.Width)+20;
 
-  btnAdd2.Left        := memSQL2.Left;
+  btnClear2.Left        := memSQL2.Left;
   ckbBloqueado2.Left := memSQL2.Left+88;
-  btnClear2.Left      := memSQL2.Left+41;
 
-  btnAdd3.Left        := memSQL3.Left;
+  btnClear3.Left        := memSQL3.Left;
   ckbBloqueado3.Left := memSQL3.Left+88;
-  btnClear3.Left      := memSQL3.Left+41;
 
   //*****
   memSQL1.Width := (memSQL2.Left- memSQL1.Left)-10;
 
-  btnAdd.Left        := memSQL1.Left;
+  btnClear.Left        := memSQL1.Left;
   ckbBloqueado1.Left := memSQL1.Left+88;
-  btnClear.Left      := memSQL1.Left+41;
 
   btnGuardar1.Left   := (memSQL1.Left+memSQL1.width)-btnGuardar1.width;
   btnApagarTag1.Left := (memSQL1.Left+memSQL1.Width)-(btnApagarTag1.width+btnGuardar1.width)-5;
 
-  Caption := IntToStr(memSQL1.Width);
 end;
 
 procedure TSQLForm.FormShow(Sender: TObject);
@@ -793,7 +789,7 @@ begin
   btnApagarTag1.Caption := 'Apagar Menu '+IntToStr(TMenuItem(Sender).Tag);
 end;
 
-procedure TSQLForm.btnAdd2Click(Sender: TObject);
+procedure TSQLForm.btnAdic2Click(Sender: TObject);
 var
   sCampos1: string;
   n, numBase: integer;
@@ -864,7 +860,7 @@ begin
   memSQL3.Lines.Clear;
 end;
 
-procedure TSQLForm.btnAdd3Click(Sender: TObject);
+procedure TSQLForm.btnAdic3Click(Sender: TObject);
 var
   sCampos1: string;
   n, numBase: integer;
@@ -1037,7 +1033,7 @@ begin
   btnApagarTag1.Tag     := 0;
 end;
 
-procedure TSQLForm.btnAddClick(Sender: TObject);
+procedure TSQLForm.btnAdic1Click(Sender: TObject);
 var
   sCampos1 : String;
   n : integer;
