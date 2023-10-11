@@ -724,7 +724,7 @@ object SQLForm: TSQLForm
       Width = 33
       Height = 25
       Anchors = [akRight, akBottom]
-      Caption = 'Clear'
+      Caption = 'Novo'
       LookAndFeel.ScrollbarMode = sbmClassic
       TabOrder = 14
       OnClick = btnClearClick
@@ -746,7 +746,7 @@ object SQLForm: TSQLForm
       Width = 33
       Height = 25
       Anchors = [akRight, akBottom]
-      Caption = 'Clear'
+      Caption = 'Novo'
       LookAndFeel.ScrollbarMode = sbmClassic
       TabOrder = 16
       OnClick = btnClear2Click
@@ -757,9 +757,10 @@ object SQLForm: TSQLForm
       Width = 33
       Height = 25
       Anchors = [akRight, akBottom]
-      Caption = 'Clear'
+      Caption = 'Novo'
       LookAndFeel.ScrollbarMode = sbmClassic
       TabOrder = 17
+      OnClick = btnClear3Click
     end
     object btnAdd3: TcxButton
       Left = 866

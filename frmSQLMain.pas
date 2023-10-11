@@ -182,6 +182,7 @@ type
     procedure Button6Click(Sender: TObject);
     procedure btnGuardar1Click(Sender: TObject);
     procedure btnApagarTag1Click(Sender: TObject);
+    procedure btnClear3Click(Sender: TObject);
   private
     { Private declarations }
     fIndex: Integer;
@@ -739,18 +740,20 @@ var
   tag, i: Integer;
   _caminho: string;
 begin
-  cdsMenuSQL.Last;
-  tag := cdsMenuSQLTag.AsInteger+1;
+  if btnApagarTag1.Tag=0 then
+  begin
+    cdsMenuSQL.Last;
+    tag := cdsMenuSQLTag.AsInteger+1;
+    cdsMenuSQL.Append;
+    cdsMenuSQLTag.AsInteger    := tag;
+  end
+  else
+  begin
+    tag := btnApagarTag1.Tag;
+    if cdsMenuSQL.Locate('tag',tag,[]) then
+      cdsMenuSQL.Edit;
+  end;
 
-  PopupMenu.AutoHotkeys := maManual;
-  Item := TMenuItem.Create(PopupMenu);
-  Item.Caption := memSQL1.Text;
-  Item.Tag := tag;
-  Item.OnClick := HandlePopupItem;
-  PopupMenu.Items.Add(Item);
-
-  cdsMenuSQL.Append;
-  cdsMenuSQLTag.AsInteger    := tag;
   cdsMenuSQLObjeto.AsInteger := 1;
   cdsMenuSQLSQL.Text         := memSQL1.Text;
   cdsMenuSQL.Post;
@@ -759,8 +762,26 @@ begin
   if Fileexists(_caminho) then
     cdsMenuSQL.SaveToFile(_caminho);
 
-  btnApagarTag1.Caption := 'Apagar nada';
-  btnApagarTag1.Tag     := 0;
+  if btnApagarTag1.Tag=0 then
+  begin
+    PopupMenu.AutoHotkeys := maManual;
+    Item := TMenuItem.Create(PopupMenu);
+    Item.Caption := memSQL1.Text;
+    Item.Tag     := tag;
+    Item.OnClick := HandlePopupItem;
+    PopupMenu.Items.Add(Item);
+  end
+  else
+  begin
+    for i := 0 to PopupMenu.Items.Count-1  do
+    begin
+      if TMenuItem(PopupMenu.Items[i]).Tag=tag then
+      begin
+        TMenuItem(PopupMenu.Items[i]).Caption := memSQL1.Text;
+      end;
+    end;
+  end;
+
 end;
 
 procedure TSQLForm.HandlePopupItem(Sender: TObject);
@@ -836,6 +857,11 @@ end;
 procedure TSQLForm.btnClear2Click(Sender: TObject);
 begin
   memSQL2.Lines.Clear;
+end;
+
+procedure TSQLForm.btnClear3Click(Sender: TObject);
+begin
+  memSQL3.Lines.Clear;
 end;
 
 procedure TSQLForm.btnAdd3Click(Sender: TObject);
@@ -922,7 +948,7 @@ begin
     else
     begin
       DBISAMQuery1.ExecSQL;
-      ShowMessage('Comando executado com sucesso! afetadas: '+inttoStr(DBISAMQuery1.RowsAffected));
+      lab1.Caption := 'Comando executado com sucesso! afetadas: '+inttoStr(DBISAMQuery1.RowsAffected); //ShowMessage('Comando executado com sucesso! afetadas: '+inttoStr(DBISAMQuery1.RowsAffected));
       lab1.Caption := 'Registros afetado(s): '+inttoStr(DBISAMQuery1.RowsAffected);
     end;
   end
@@ -1007,6 +1033,8 @@ end;
 procedure TSQLForm.btnClearClick(Sender: TObject);
 begin
   memSQL1.Lines.Clear;
+  btnApagarTag1.Caption := 'Apagar nada';
+  btnApagarTag1.Tag     := 0;
 end;
 
 procedure TSQLForm.btnAddClick(Sender: TObject);
@@ -1085,6 +1113,7 @@ begin
     carregaPopMenuGuardarSQL();
 
     btnApagarTag1.Caption := 'Apagar nada';
+    btnApagarTag1.Tag     := 0;
     memSQL1.Lines.Clear;
   end;
 
