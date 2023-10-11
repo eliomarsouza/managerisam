@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899-12-30 00:00:00.000.947,C:\Users\Developer\Documents\Embarcadero\Studio\Projects\Unit1.dfm=C:\Users\Developer\Documents\Embarcadero\Studio\Projects\SQL\frmSQLMain.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.103,C:\Projetos\SQL\SQLServerManager.dproj=C:\Projetos\SQL\EntrepriseSQL.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.775,C:\Users\Developer\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\Developer\Documents\Embarcadero\Studio\Projects\SQL\EntrepriseSQL.dproj</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.999,=C:\Source\MyProjets\SQLManager\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.960,C:\Source\SQL\Unit1.dfm=C:\Source\SQL\frmScriptDelphi.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.202,C:\Source\MyProjets\SQLManager\Unit1.dfm=C:\Source\MyProjets\SQLManager\frmMemoForm.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.259,=C:\Users\Developer\Documents\Embarcadero\Studio\Projects\SQL\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.400,C:\Users\Developer\Documents\Embarcadero\Studio\Projects\SQL\Unit1.pas=C:\Users\Developer\Documents\Embarcadero\Studio\Projects\SQL\frmBaseForm.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.588,=C:\Users\Developer\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.593,=C:\Users\Developer\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.335,=C:\Source\SQL\Unit1.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.960,C:\Source\SQL\Unit1.pas=C:\Source\SQL\frmScriptDelphi.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.202,C:\Source\MyProjets\SQLManager\Unit1.pas=C:\Source\MyProjets\SQLManager\frmMemoForm.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.400,C:\Users\Developer\Documents\Embarcadero\Studio\Projects\SQL\Unit1.dfm=C:\Users\Developer\Documents\Embarcadero\Studio\Projects\SQL\frmBaseForm.dfm</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.947,C:\Users\Developer\Documents\Embarcadero\Studio\Projects\Unit1.pas=C:\Users\Developer\Documents\Embarcadero\Studio\Projects\SQL\frmSQLMain.pas</Transaction>
+    <Transaction>1899-12-30 00:00:00.000.728,=C:\Users\Developer\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+  </Transactions>
+</BorlandProject>
