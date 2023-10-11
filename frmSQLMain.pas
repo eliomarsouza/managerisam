@@ -110,7 +110,6 @@ type
     OpenDialog1: TOpenDialog;
     SaveAs1: TMenuItem;
     SaveDialog1: TSaveDialog;
-    cxButton3: TcxButton;
     PopupMenu1: TPopupMenu;
     NtfEsc11: TMenuItem;
     NtfEsc21: TMenuItem;
@@ -139,6 +138,13 @@ type
     Button1: TButton;
     Button5: TButton;
     Button6: TButton;
+    btnGuardar1: TcxButton;
+    cdsMenuSQL: TClientDataSet;
+    cdsMenuSQLObjeto: TIntegerField;
+    cdsMenuSQLSQL: TMemoField;
+    PopupMenu: TPopupMenu;
+    cdsMenuSQLTag: TIntegerField;
+    btnApagarTag1: TcxButton;
     procedure FormShow(Sender: TObject);
     procedure Action1Execute(Sender: TObject);
     procedure brnCadastroBasesClick(Sender: TObject);
@@ -174,6 +180,8 @@ type
     procedure FormResize(Sender: TObject);
     procedure Button5Click(Sender: TObject);
     procedure Button6Click(Sender: TObject);
+    procedure btnGuardar1Click(Sender: TObject);
+    procedure btnApagarTag1Click(Sender: TObject);
   private
     { Private declarations }
     fIndex: Integer;
@@ -184,7 +192,9 @@ type
     procedure LimparControlos();
   public
     { Public declarations }
+    procedure HandlePopupItem(Sender: TObject);
     Procedure MostrasCampos1();
+    Procedure carregaPopMenuGuardarSQL();
 
     Procedure definiConexaoPara3Bases(psDirectory: String;pbNumBase: integer);
     procedure AdicionarFilho(const aPai: integer; const aNoPai: TTreeNode);
@@ -219,6 +229,8 @@ begin
   btnAdd.Left        := memSQL1.Left;
   ckbBloqueado1.Left := memSQL1.Left+88;
   btnClear.Left      := memSQL1.Left+41;
+  btnGuardar1.Left   := memSQL1.Left+353;
+  btnApagarTag1.Left := memSQL1.Left+256;
 
   btnAdd2.Left        := memSQL2.Left;
   ckbBloqueado2.Left := memSQL2.Left+88;
@@ -227,6 +239,9 @@ begin
   btnAdd3.Left        := memSQL3.Left;
   ckbBloqueado3.Left := memSQL3.Left+88;
   btnClear3.Left      := memSQL3.Left+41;
+
+
+
 end;
 
 procedure TSQLForm.FormShow(Sender: TObject);
@@ -245,7 +260,45 @@ begin
   if FileExists(_caminho) then
       ImageFilosoft.Picture.LoadFromFile(_caminho);
 
+
+  cdsMenuSQL.Last;
+  tag := cdsMenuSQLTag.AsInteger+1;
+  carregaPopMenuGuardarSQL();
+
   btnExecutar.Click;
+end;
+
+Procedure TSQLForm.carregaPopMenuGuardarSQL();
+var
+ _caminho: string;
+  Item: TMenuItem;
+begin
+  PopupMenu.Items.Clear;
+  PopupMenu.AutoHotkeys := maManual;
+  cdsMenuSQL.First;
+  while not cdsMenuSQL.eof do
+  begin
+    if cdsMenuSQLObjeto.AsInteger=1 then
+    begin
+      Item := TMenuItem.Create(PopupMenu);
+      Item.Caption := cdsMenuSQLSQL.AsString;
+      Item.Tag     := cdsMenuSQLTag.AsInteger;
+      Item.OnClick := HandlePopupItem;
+
+      PopupMenu.Items.Add(Item);
+    end;
+
+    if cdsMenuSQLObjeto.AsInteger=2 then
+    begin
+      //Item := TMenuItem.Create(PopupMenu2);
+      Item.Caption := cdsMenuSQLSQL.AsString;
+      Item.Tag     := cdsMenuSQLTag.AsInteger;
+      Item.OnClick := HandlePopupItem;
+      //PopupMenu2.Items.Add(Item);
+    end;
+
+    cdsMenuSQL.Next;
+  end;
 end;
 
 procedure TSQLForm.CarregarConfiguracaoNaEcra(pPathCaminho:string);
@@ -667,6 +720,45 @@ begin
   end;
 end;
 
+procedure TSQLForm.btnGuardar1Click(Sender: TObject);
+var
+  Item: TMenuItem;
+  tag, i: Integer;
+  _caminho: string;
+begin
+  cdsMenuSQL.Last;
+  tag := cdsMenuSQLTag.AsInteger+1;
+
+  PopupMenu.AutoHotkeys := maManual;
+  Item := TMenuItem.Create(PopupMenu);
+  Item.Caption := memSQL1.Text;
+  Item.Tag := tag;
+  Item.OnClick := HandlePopupItem;
+  PopupMenu.Items.Add(Item);
+
+  cdsMenuSQL.Append;
+  cdsMenuSQLTag.AsInteger    := tag;
+  cdsMenuSQLObjeto.AsInteger := 1;
+  cdsMenuSQLSQL.Text         := memSQL1.Text;
+  cdsMenuSQL.Post;
+
+  _caminho   := ExtractFilePath(ParamStr(0))+'\meSQL.xml';
+  if Fileexists(_caminho) then
+    cdsMenuSQL.SaveToFile(_caminho);
+
+  btnApagarTag1.Caption := 'Apagar nada';
+  btnApagarTag1.Tag     := 0;
+end;
+
+procedure TSQLForm.HandlePopupItem(Sender: TObject);
+begin
+  //ShowMessage(inttoStr(TMenuItem(Sender).Tag));
+  cdsMenuSQL.Locate('Tag',TMenuItem(Sender).Tag,[]);
+  memSQL1.Text          := cdsMenuSQLSQL.AsString;
+  btnApagarTag1.Tag     := TMenuItem(Sender).Tag;
+  btnApagarTag1.Caption := 'Apagar Menu '+IntToStr(TMenuItem(Sender).Tag);
+end;
+
 procedure TSQLForm.btnAdd2Click(Sender: TObject);
 var
   sCampos1: string;
@@ -965,6 +1057,27 @@ begin
   end;
 end;
 
+procedure TSQLForm.btnApagarTag1Click(Sender: TObject);
+var
+  _caminho: string;
+begin
+  if cdsMenuSQL.Locate('Tag',btnApagarTag1.Tag,[]) then
+  begin
+    cdsMenuSQL.Delete;
+
+    _caminho   := ExtractFilePath(ParamStr(0))+'\meSQL.xml';
+    if Fileexists(_caminho) then
+      cdsMenuSQL.SaveToFile(_caminho);
+
+    carregaPopMenuGuardarSQL();
+
+    btnApagarTag1.Caption := 'Apagar nada';
+    memSQL1.Lines.Clear;
+  end;
+
+
+end;
+
 procedure TSQLForm.cxPageControl1Change(Sender: TObject);
 begin
   if cxPageControl1.ActivePageIndex=1 then
@@ -1141,6 +1254,18 @@ begin
     cdsConfiguracao.SaveToFile(_caminho)
   else
     cdsConfiguracao.LoadFromFile(_caminho);
+
+
+  cdsMenuSQL.Close;
+  cdsMenuSQL.CreateDataSet;
+  cdsMenuSQL.Open;
+  cdsMenuSQL.EmptyDataSet;
+
+  _caminho   := ExtractFilePath(ParamStr(0))+'\meSQL.xml';
+  if not Fileexists(_caminho) then
+    cdsMenuSQL.SaveToFile(_caminho)
+  else
+    cdsMenuSQL.LoadFromFile(_caminho);
 end;
 
 procedure TSQLForm.Resetnajabela1Click(Sender: TObject);

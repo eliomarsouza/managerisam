@@ -482,17 +482,6 @@ object SQLForm: TSQLForm
         TabOrder = 5
         OnClick = Button4Click
       end
-      object cxButton3: TcxButton
-        Left = 1219
-        Top = 49
-        Width = 75
-        Height = 25
-        Caption = 'Not'#225'rios'
-        DropDownMenu = PopupMenu1
-        Kind = cxbkDropDownButton
-        LookAndFeel.ScrollbarMode = sbmClassic
-        TabOrder = 6
-      end
     end
   end
   object cxTabCab: TcxTabControl
@@ -596,9 +585,9 @@ object SQLForm: TSQLForm
       TabOrder = 6
     end
     object btnMostraCampos: TBitBtn
-      Left = 1058
+      Left = 1032
       Top = -2
-      Width = 71
+      Width = 97
       Height = 25
       Caption = 'mostra campos'
       TabOrder = 7
@@ -809,6 +798,30 @@ object SQLForm: TSQLForm
       Caption = 'Bloqueado'
       TabOrder = 21
       OnClick = ckbBloqueado1Click
+    end
+    object btnGuardar1: TcxButton
+      Left = 353
+      Top = 115
+      Width = 75
+      Height = 25
+      Anchors = [akRight, akBottom]
+      Caption = 'Guardar'
+      DropDownMenu = PopupMenu
+      Kind = cxbkDropDownButton
+      LookAndFeel.ScrollbarMode = sbmClassic
+      TabOrder = 22
+      OnClick = btnGuardar1Click
+    end
+    object btnApagarTag1: TcxButton
+      Left = 256
+      Top = 115
+      Width = 91
+      Height = 25
+      Anchors = [akRight, akBottom]
+      Caption = 'Apagar nada'
+      LookAndFeel.ScrollbarMode = sbmClassic
+      TabOrder = 23
+      OnClick = btnApagarTag1Click
     end
   end
   object cxSplitter3: TcxSplitter
@@ -1213,5 +1226,26 @@ object SQLForm: TSQLForm
     Params = <>
     Left = 560
     Top = 466
+  end
+  object cdsMenuSQL: TClientDataSet
+    Aggregates = <>
+    Params = <>
+    Left = 128
+    Top = 278
+    object cdsMenuSQLObjeto: TIntegerField
+      FieldName = 'Objeto'
+    end
+    object cdsMenuSQLSQL: TMemoField
+      FieldName = 'SQL'
+      BlobType = ftMemo
+      Size = 500
+    end
+    object cdsMenuSQLTag: TIntegerField
+      FieldName = 'Tag'
+    end
+  end
+  object PopupMenu: TPopupMenu
+    Left = 120
+    Top = 328
   end
 end
