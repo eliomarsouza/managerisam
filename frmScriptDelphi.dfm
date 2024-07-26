@@ -24,9 +24,14 @@ object ScriptDelphiForm: TScriptDelphiForm
     Height = 456
     Align = alCustom
     Anchors = [akLeft, akTop, akRight, akBottom]
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Consolas'
+    Font.Style = []
+    ParentFont = False
+    ScrollBars = ssVertical
     TabOrder = 0
-    ExplicitWidth = 963
-    ExplicitHeight = 234
   end
   object btnExecutar: TcxButton
     Left = 8
@@ -38,6 +43,5 @@ object ScriptDelphiForm: TScriptDelphiForm
     LookAndFeel.ScrollbarMode = sbmClassic
     TabOrder = 1
     OnClick = btnExecutarClick
-    ExplicitTop = 248
   end
 end

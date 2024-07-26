@@ -22,6 +22,8 @@ type
     { Public declarations }
     consulta: Boolean;
     sql: boolean;
+    procedure Add(aTexto:string);
+    procedure Clear();
   end;
 
 var
@@ -31,18 +33,6 @@ implementation
 
 {$R *.dfm}
 
-procedure TScriptDelphiForm.btnExecutarClick(Sender: TObject);
-begin
-  consulta := True;
-  close;
-end;
-
-procedure TScriptDelphiForm.FormClose(Sender: TObject;
-  var Action: TCloseAction);
-begin
-  sql:= false;
-end;
-
 procedure TScriptDelphiForm.FormCreate(Sender: TObject);
 begin
   sql:= false;
@@ -51,7 +41,6 @@ end;
 procedure TScriptDelphiForm.FormShow(Sender: TObject);
 begin
   consulta := false;
-
   if sql then
   begin
     self.Caption         := 'Consultas e comandos SQL';
@@ -63,5 +52,30 @@ begin
     btnExecutar.Caption := 'Ok';
   end;
 end;
+
+procedure TScriptDelphiForm.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+  sql:= false;
+end;
+
+procedure TScriptDelphiForm.btnExecutarClick(Sender: TObject);
+begin
+  consulta := True;
+  close;
+end;
+
+procedure TScriptDelphiForm.Add(aTexto:string);
+begin
+  self.Memo1.Lines.Add(aTexto);
+end;
+
+procedure TScriptDelphiForm.Clear();
+begin
+  self.Memo1.Lines.Clear;
+end;
+
+
+
 
 end.

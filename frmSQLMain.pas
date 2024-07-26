@@ -10,7 +10,8 @@ uses
   cxLabel, Vcl.Grids, Vcl.DBGrids, System.Actions, Vcl.ActnList,
   Datasnap.DBClient, dxGDIPlusClasses, Vcl.ExtCtrls, Vcl.ComCtrls, cxTreeView,
   dxBarBuiltInMenu, cxPC, Vcl.Buttons, CRGrid, dxSkinsCore,
-  dxSkinsDefaultPainters, cxSplitter, RxPlacemnt;
+  dxSkinsDefaultPainters, cxSplitter, RxPlacemnt, ppComm, ppRelatv, ppProd,
+  ppClass, ppReport;
 
 type
   TSQLForm = class(TForm)
@@ -60,9 +61,6 @@ type
     cdsCampos3Nome: TStringField;
     cdsCampos3Tamanho: TIntegerField;
     cdsCampos3Tipo: TStringField;
-    Button2: TButton;
-    Button3: TButton;
-    Button4: TButton;
     MainMenu1: TMainMenu;
     Arquivo1: TMenuItem;
     Salvar1: TMenuItem;
@@ -145,15 +143,34 @@ type
     cdsMenuSQLTag: TIntegerField;
     btnApagarTag1: TcxButton;
     btnAdic1: TcxButton;
+    btnScripts1: TcxButton;
+    PopupMenu2: TPopupMenu;
+    CreateTable2: TMenuItem;
+    cxButton2: TcxButton;
+    PopupMenu3: TPopupMenu;
+    CreateTable3: TMenuItem;
+    cxButton3: TcxButton;
+    PopupMenu4: TPopupMenu;
+    CreateTable4: TMenuItem;
+    AtribuirCampos1: TMenuItem;
+    AtribuirCampos2: TMenuItem;
+    AtribuirCampos3: TMenuItem;
+    AtribuircamposObjJSONparaDBISAMTable1: TMenuItem;
+    AtribuircamposObjJSONparaDBISAMTable2: TMenuItem;
+    AtribuircamposObjJSONparaDBISAMTable3: TMenuItem;
+    N3: TMenuItem;
+    N4: TMenuItem;
+    N5: TMenuItem;
+    Json1: TMenuItem;
+    JSON2: TMenuItem;
+    JSON3: TMenuItem;
+    ppReport1: TppReport;
     procedure FormShow(Sender: TObject);
     procedure Action1Execute(Sender: TObject);
     procedure brnCadastroBasesClick(Sender: TObject);
     procedure btnExecutarClick(Sender: TObject);
     procedure btnAdic1Click(Sender: TObject);
     procedure btnMostraCamposClick(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
-    procedure Button3Click(Sender: TObject);
-    procedure Button4Click(Sender: TObject);
     procedure cxPageControl1Change(Sender: TObject);
     procedure memSQL1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure btnClearClick(Sender: TObject);
@@ -183,14 +200,27 @@ type
     procedure btnGuardar1Click(Sender: TObject);
     procedure btnApagarTag1Click(Sender: TObject);
     procedure btnClear3Click(Sender: TObject);
+    procedure CreateTable2Click(Sender: TObject);
+    procedure CreateTable3Click(Sender: TObject);
+    procedure CreateTable4Click(Sender: TObject);
+    procedure AtribuirCampos1Click(Sender: TObject);
+    procedure AtribuirCampos2Click(Sender: TObject);
+    procedure AtribuirCampos3Click(Sender: TObject);
+    procedure AtribuircamposObjJSONparaDBISAMTable1Click(Sender: TObject);
+    procedure AtribuircamposObjJSONparaDBISAMTable2Click(Sender: TObject);
+    procedure AtribuircamposObjJSONparaDBISAMTable3Click(Sender: TObject);
+    procedure Json1Click(Sender: TObject);
+    procedure JSON2Click(Sender: TObject);
+    procedure JSON3Click(Sender: TObject);
   private
     { Private declarations }
     fIndex: Integer;
-    Procedure carregaListaDaBase(base:String);//carrega a os nomes das bases no combobox
-    procedure carregaTabela(psTabela, psDirectory: String); //carrega od nomes das tabelas no combobox
+    Procedure LoadBaseListToComboBox(base:String);//carrega a os nomes das bases no combobox
+    procedure LoadTabelsToWinControlCombo(psTabela, psDirectory: String); //carrega od nomes das tabelas no combobox
 
-    function getTabelaSelect(sql:string): string;
+    function getTabelaSelect(sql:string;aExt:Boolean=true): string;
     procedure LimparControlos();
+    Procedure geraJson(Tabelas:string;aDBISAMQuery:TDBISAMQuery);
   public
     { Public declarations }
     procedure HandlePopupItem(Sender: TObject);
@@ -203,6 +233,9 @@ type
     Procedure OpenTempConfig(pPathFicheiro:string);
     procedure CarregarConfiguracaoNaEcra(pPathCaminho:string);
     procedure SaveNameTabelaConfig(pPathFicheiro:string);
+    procedure GeraCreateTable(aDBISAMQuery: TDBISAMQuery);
+    procedure AtribuCamposDBISAMTable(aDBISAMQuery: TDBISAMQuery);
+    procedure AtribuCamposTJSONObjetcs(aDBISAMQuery: TDBISAMQuery);
   end;
 
 var
@@ -314,7 +347,7 @@ end;
 procedure TSQLForm.CarregarConfiguracaoNaEcra(pPathCaminho:string);
 begin
   OpenTempConfig(pPathCaminho);
-  carregaListaDaBase(cdsConfiguracaoBase.AsString);
+  LoadBaseListToComboBox(cdsConfiguracaoBase.AsString);
 
   cxPageControl1.ActivePageIndex := 0;
   //carregar o ultimo salvo
@@ -344,7 +377,7 @@ begin
 
       if DirectoryExists(cdsConfiguracaoDirectory.AsString) then
       begin
-        carregaTabela(cdsConfiguracaotabela.AsString, cdsConfiguracaoDirectory.AsString);
+        LoadTabelsToWinControlCombo(cdsConfiguracaotabela.AsString, cdsConfiguracaoDirectory.AsString);
         definiConexaoPara3Bases(cdsConfiguracaoDirectory.AsString, cdsConfiguracao.RecNo);
       end;
       cdsConfiguracao.Next;
@@ -410,6 +443,253 @@ begin
   cdsCampos1.First;
   cdsCampos2.First;
   cdsCampos3.First;
+end;
+
+procedure TSQLForm.CreateTable3Click(Sender: TObject);
+begin
+  GeraCreateTable(DBISAMQuery2);
+end;
+
+procedure TSQLForm.CreateTable4Click(Sender: TObject);
+begin
+  GeraCreateTable(DBISAMQuery3);
+end;
+
+procedure TSQLForm.GeraCreateTable(aDBISAMQuery: TDBISAMQuery);
+var
+  i: integer;
+  sTipoCampo : String;
+begin
+  ScriptDelphiForm.Memo1.Lines.Clear;
+  ScriptDelphiForm.Add('uses fsFuncsFile, dbisamtb;');
+  ScriptDelphiForm.Add('');
+  ScriptDelphiForm.Add('procedure TForm1.OpenTempTables;');
+  ScriptDelphiForm.Add('begin');
+  ScriptDelphiForm.Add('  with mem_DBISAMTable do');
+  ScriptDelphiForm.Add('  begin');
+  ScriptDelphiForm.Add('    Close;');
+  ScriptDelphiForm.Add('    if Exists then');
+  ScriptDelphiForm.Add('      DeleteTable;');
+  ScriptDelphiForm.Add('    Exclusive := True;');
+  ScriptDelphiForm.Add('    DatabaseName := GetSystemPath(sysTempPath);');
+  ScriptDelphiForm.Add('    TableName := GetUniqueFileName(DatabaseName);');
+  ScriptDelphiForm.Add('    if Exists then');
+  ScriptDelphiForm.Add('      DeleteTable;');
+
+  ScriptDelphiForm.Add('  //**campos');
+  ScriptDelphiForm.Add('    FieldDefs.Clear;');
+  //ScriptDelphiForm.Add('    FieldDefs.Add('+QuotedStr('Id')+', ftAutoInc, 0,False);');
+
+  for i := 0 to aDBISAMQuery.FieldCount-1 do
+  begin
+    sTipoCampo := aDBISAMQuery.Fields[i].ClassName;
+    sTipoCampo := 'ft'+copy(sTipoCampo,2, length(sTipoCampo)-6)  ; //ftString     TStringField
+    ScriptDelphiForm.Add('    FieldDefs.Add('+QuotedStr(aDBISAMQuery.Fields[i].FullName) +', '+sTipoCampo+', '+inttoStr(aDBISAMQuery.Fields[i].Size)+',False);');
+  end;
+
+  ScriptDelphiForm.Add('    //**Index');
+  ScriptDelphiForm.Add('    IndexDefs.Clear;');
+//  ScriptDelphiForm.Add('    IndexDefs.Add('+QuotedStr('')+','+QuotedStr('Id')+',[ixPrimary,ixUnique]);');
+  ScriptDelphiForm.Add('    //IndexDefs.Add('+QuotedStr('PorDescricao')+','+QuotedStr('Descricao')+',[ixCaseInsensitive]);');
+  ScriptDelphiForm.Add('    CreateTable;');
+  ScriptDelphiForm.Add('    Open;');
+  ScriptDelphiForm.Add('  end;');
+  ScriptDelphiForm.Add('end;');
+
+  ScriptDelphiForm.Showmodal;
+end;
+
+function spaces(aValue: integer): string;
+var
+  x: integer;
+  _space: string;
+begin
+  _space := '';
+  for x := 1 to aValue  do
+    _space := _space + ' ';
+
+  result := _space;
+end;
+
+function ConvertFrom(aValue: string): string;
+var
+  sTipoCampo: string;
+begin
+  sTipoCampo := copy(aValue,2, length(aValue)-6); //convert to String from TStringField
+  result     := sTipoCampo;
+end;
+
+procedure TSQLForm.AtribuCamposDBISAMTable(aDBISAMQuery: TDBISAMQuery);
+var
+  _tam1, _tam2,
+  _tamanhoFixo, _tamanhoVariavel,
+  i: integer;
+  sFullNameCampo, sNameCampo,
+  sTipoCampo, _space : String;
+begin
+  ScriptDelphiForm.Clear;
+
+  _tam1 := 0; _tam2 := 0;
+  for i := 0 to aDBISAMQuery.FieldCount-1 do
+  begin
+    sTipoCampo := ConvertFrom(aDBISAMQuery.Fields[i].ClassName);
+    if length(sTipoCampo)> _tam1 then
+      _tam1 := length(sTipoCampo);
+
+    if length(aDBISAMQuery.Fields[i].FullName)> _tam2 then
+      _tam2 := length(aDBISAMQuery.Fields[i].FullName);
+  end;
+  if _tam1+_tam2<25 then
+    _tamanhoFixo := _tam1+_tam2 + 31
+  else
+    _tamanhoFixo := _tam1+_tam2 + 30;
+
+  ScriptDelphiForm.Add('  DBISAMTable1.Append;');
+  for i := 0 to aDBISAMQuery.FieldCount-1 do
+  begin
+    sNameCampo       := aDBISAMQuery.Fields[i].FullName;
+    sTipoCampo       := ConvertFrom(aDBISAMQuery.Fields[i].ClassName);
+    sFullNameCampo   := 'DBISAMTable1.FieldByName('+QuotedStr(sNameCampo) +').As'+sTipoCampo;
+    _tamanhoVariavel := Length(sFullNameCampo);
+
+    _space := spaces(_tamanhoFixo-_tamanhoVariavel); //36 - 15);
+
+    ScriptDelphiForm.Add('  '+sFullNameCampo + _space  +':= '+'DBISAMTable2.FieldByName('+QuotedStr(aDBISAMQuery.Fields[i].FullName) +').As'+sTipoCampo+';');
+  end;
+  ScriptDelphiForm.Add('  try');
+  ScriptDelphiForm.Add('    DBISAMTable1.Post;');
+  ScriptDelphiForm.Add('  Except');
+  ScriptDelphiForm.Add('   On E:Exception do');
+  ScriptDelphiForm.Add('    begin');
+  ScriptDelphiForm.Add('       DBISAMTable1.Cancel;');
+  ScriptDelphiForm.Add('       DBISAMTable1.Refresh;');
+  ScriptDelphiForm.Add('       Showmessage('+QuotedStr('Falhou a gravação: ')+'+ E.Message);');
+  ScriptDelphiForm.Add('       exit;');
+  ScriptDelphiForm.Add('    end;');
+  ScriptDelphiForm.Add('  end;');
+
+  ScriptDelphiForm.Showmodal;
+end;
+
+procedure TSQLForm.AtribuCamposTJSONObjetcs(aDBISAMQuery: TDBISAMQuery);
+var
+  _tam1, _tam2,
+  _tamanhoFixo, _tamanhoVariavel,
+  i: integer;
+  sFullNameOrig,
+  sFullNameDest,
+  sNameCampo,
+  sTipoCampo, _space : String;
+begin
+  ScriptDelphiForm.Clear;
+
+  _tam1 := 0; _tam2 := 0;
+  for i := 0 to aDBISAMQuery.FieldCount-1 do
+  begin
+    sTipoCampo := ConvertFrom(aDBISAMQuery.Fields[i].ClassName);
+    if length(sTipoCampo)> _tam1 then
+      _tam1 := length(sTipoCampo);
+
+    if length(aDBISAMQuery.Fields[i].FullName)> _tam2 then
+      _tam2 := length(aDBISAMQuery.Fields[i].FullName);
+  end;
+  if _tam1+_tam2<25 then
+    _tamanhoFixo := _tam1+_tam2 + 31
+  else
+    _tamanhoFixo := _tam1+_tam2 + 30;
+
+   ///Atribuir os campos
+  ScriptDelphiForm.Add('var');
+  ScriptDelphiForm.Add(' _ObjMain, _ObjArtigo: TJSONObject; //System.JSON');
+  ScriptDelphiForm.Add(' ts : TFormatSettings;  //SysUtils');
+  ScriptDelphiForm.Add('begin');
+  ScriptDelphiForm.Add('  ts:=TFormatSettings.Create;');
+  ScriptDelphiForm.Add('  ts.ShortDateFormat:='+QuotedStr('yyyy-MM-dd')+';');
+  ScriptDelphiForm.Add('  ts.DateSeparator:='+QuotedStr('-')+';');
+  ScriptDelphiForm.Add('  ts.TimeSeparator:='+QuotedStr(':')+';');
+  ScriptDelphiForm.Add('');
+
+  ScriptDelphiForm.Add('  _ObjMain   := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(_requestBody), 0) as TJSONObject;');
+  ScriptDelphiForm.Add('  try');
+  ScriptDelphiForm.Add('    _ObjArtigo := _ObjMain.GetValue('+QuotedStr('Artigo')+') as TJSONObject;');
+  //verificar se existe o campo no  objJson
+
+
+  ScriptDelphiForm.Add('    DBISAMTable1.Append;');
+  for i := 0 to aDBISAMQuery.FieldCount-1 do
+  begin
+    sNameCampo       := aDBISAMQuery.Fields[i].FullName;
+    sTipoCampo       := ConvertFrom(aDBISAMQuery.Fields[i].ClassName);
+    sFullNameDest    := 'DBISAMTable1.FieldByName('+QuotedStr(sNameCampo) +').As'+sTipoCampo;
+
+    //Calculo do espaço entre os a origem e destino.
+    _tamanhoVariavel := Length(sFullNameDest);
+    _space           := spaces(_tamanhoFixo-_tamanhoVariavel); //36 - 15);
+
+    if LowerCase(sTipoCampo)='integer' then
+      sFullNameOrig    := 'StrToIntDef(_ObjArtigo.GetValue('+QuotedStr(aDBISAMQuery.Fields[i].FullName) +').Value,0);'
+    else
+    if LowerCase(sTipoCampo)='float' then
+      sFullNameOrig    := 'StrToFloatDef(_ObjArtigo.GetValue('+QuotedStr(aDBISAMQuery.Fields[i].FullName) +').Value,0.0);'
+    else
+    if LowerCase(sTipoCampo)='boolean' then
+      sFullNameOrig    := 'GETValueBooleanWS(_ObjArtigo.GetValue('+QuotedStr(aDBISAMQuery.Fields[i].FullName) +').Value);'
+    else
+    if LowerCase(sTipoCampo)='datetime' then
+      sFullNameOrig    := 'StrToDatetime(_ObjArtigo.GetValue('+QuotedStr(aDBISAMQuery.Fields[i].FullName) +').Value, ts);'
+    else
+       sFullNameOrig    := '_ObjArtigo.GetValue('+QuotedStr(aDBISAMQuery.Fields[i].FullName) +').Value;';
+
+    ScriptDelphiForm.Add('    '+sFullNameDest + _space  +':= ' + sFullNameOrig);
+  end;
+  ScriptDelphiForm.Add('    try');
+  ScriptDelphiForm.Add('      DBISAMTable1.Post;');
+  ScriptDelphiForm.Add('    Except');
+  ScriptDelphiForm.Add('     On E:Exception do');
+  ScriptDelphiForm.Add('      begin');
+  ScriptDelphiForm.Add('         DBISAMTable1.Cancel;');
+  ScriptDelphiForm.Add('         DBISAMTable1.Refresh;');
+  ScriptDelphiForm.Add('         Showmessage('+QuotedStr('Falhou a gravação: ')+'+ E.Message);');
+  ScriptDelphiForm.Add('         exit;');
+  ScriptDelphiForm.Add('      end;');
+  ScriptDelphiForm.Add('    end;');
+
+  ScriptDelphiForm.Add('  Finally');
+  ScriptDelphiForm.Add('    _ObjMain.free;');
+  ScriptDelphiForm.Add('  End;');
+  ScriptDelphiForm.Add('end;');
+
+  ScriptDelphiForm.Showmodal;
+end;
+
+procedure TSQLForm.AtribuirCampos1Click(Sender: TObject);
+begin
+  AtribuCamposDBISAMTable(DBISAMQuery1);
+end;
+
+procedure TSQLForm.AtribuirCampos2Click(Sender: TObject);
+begin
+  AtribuCamposDBISAMTable(DBISAMQuery2);
+end;
+
+procedure TSQLForm.AtribuirCampos3Click(Sender: TObject);
+begin
+  AtribuCamposDBISAMTable(DBISAMQuery3);
+end;
+
+procedure TSQLForm.AtribuircamposObjJSONparaDBISAMTable1Click(Sender: TObject);
+begin
+  AtribuCamposTJSONObjetcs(DBISAMQuery1);
+end;
+
+procedure TSQLForm.AtribuircamposObjJSONparaDBISAMTable2Click(Sender: TObject);
+begin
+  AtribuCamposTJSONObjetcs(DBISAMQuery2);
+end;
+
+procedure TSQLForm.AtribuircamposObjJSONparaDBISAMTable3Click(Sender: TObject);
+begin
+  AtribuCamposTJSONObjetcs(DBISAMQuery3);
 end;
 
 Procedure TSQLForm.MostrasCampos1();
@@ -478,7 +758,7 @@ begin
   BaseForm.Free;
 
   if BaseForm.Gravou then
-     carregaListaDaBase('')
+     LoadBaseListToComboBox('')
   else
    cdsConfigBase.Active:= true;
 end;
@@ -507,145 +787,6 @@ begin
     end;
 
   end;
-end;
-
-procedure TSQLForm.Button2Click(Sender: TObject);
-var
-  i: integer;
-  sTipoCampo : String;
-  lista: TStringList;
-begin
-  lista:= TStringList.Create();
-  lista.Clear;
-  lista.Add('uses fsFuncsFile, dbisamtb;');
-  lista.Add('');
-  lista.Add('procedure TForm1.OpenTempTables;');
-  lista.Add('begin');
-  lista.Add('  with mem_DBISAMTable do');
-  lista.Add('  begin');
-  lista.Add('    Close;');
-  lista.Add('    if Exists then');
-  lista.Add('      DeleteTable;');
-  lista.Add('    Exclusive := True;');
-  lista.Add('    DatabaseName := GetSystemPath(sysTempPath);');
-  lista.Add('    TableName := GetUniqueFileName(DatabaseName);');
-  lista.Add('    if Exists then');
-  lista.Add('      DeleteTable;');
-
-  lista.Add('  //**campos');
-  lista.Add('    FieldDefs.Clear;');
-  lista.Add('    FieldDefs.Add('+QuotedStr('Id')+', ftAutoInc, 0,False);');
-
-  for i := 0 to DBISAMQuery1.FieldCount-1 do
-  begin
-    sTipoCampo := DBISAMQuery1.Fields[i].ClassName;
-    sTipoCampo := 'ft'+copy(sTipoCampo,2, length(sTipoCampo)-6)  ; //ftString     TStringField
-    lista.Add('    FieldDefs.Add('+QuotedStr(DBISAMQuery1.Fields[i].FullName) +', '+sTipoCampo+', '+inttoStr(DBISAMQuery1.Fields[i].Size)+',False);');
-  end;
-
-  lista.Add('    //**Index');
-  lista.Add('    IndexDefs.Clear;');
-  lista.Add('    IndexDefs.Add('+QuotedStr('')+','+QuotedStr('Id')+',[ixPrimary,ixUnique]);');
-  lista.Add('    //IndexDefs.Add('+QuotedStr('PorDescricao')+','+QuotedStr('Descricao')+',[ixCaseInsensitive]);');
-  lista.Add('    CreateTable;');
-  lista.Add('    Open;');
-  lista.Add('  end;');
-  lista.Add('end;');
-
-  ScriptDelphiForm.Memo1.Lines.Text := lista.Text;
-  ScriptDelphiForm.Showmodal;
-
-  lista.Free;
-end;
-
-procedure TSQLForm.Button3Click(Sender: TObject);
-var
-  i: integer;
-  sTipoCampo : String;
-begin
-  ScriptDelphiForm.Memo1.Lines.Clear;
-  ScriptDelphiForm.Memo1.Lines.Add('uses fsFuncsFile, dbisamtb;');
-  ScriptDelphiForm.Memo1.Lines.Add('');
-  ScriptDelphiForm.Memo1.Lines.Add('procedure TForm1.OpenTempTables;');
-  ScriptDelphiForm.Memo1.Lines.Add('begin');
-  ScriptDelphiForm.Memo1.Lines.Add('  with mem_DBISAMTable do');
-  ScriptDelphiForm.Memo1.Lines.Add('  begin');
-  ScriptDelphiForm.Memo1.Lines.Add('    Close;');
-  ScriptDelphiForm.Memo1.Lines.Add('    if Exists then');
-  ScriptDelphiForm.Memo1.Lines.Add('      DeleteTable;');
-  ScriptDelphiForm.Memo1.Lines.Add('    Exclusive := True;');
-  ScriptDelphiForm.Memo1.Lines.Add('    DatabaseName := GetSystemPath(sysTempPath);');
-  ScriptDelphiForm.Memo1.Lines.Add('    TableName := GetUniqueFileName(DatabaseName);');
-  ScriptDelphiForm.Memo1.Lines.Add('    if Exists then');
-  ScriptDelphiForm.Memo1.Lines.Add('      DeleteTable;');
-
-  ScriptDelphiForm.Memo1.Lines.Add('  //**campos');
-  ScriptDelphiForm.Memo1.Lines.Add('    FieldDefs.Clear;');
-  ScriptDelphiForm.Memo1.Lines.Add('    FieldDefs.Add('+QuotedStr('Id')+', ftAutoInc, 0,False);');
-
-  for i := 0 to DBISAMQuery2.FieldCount-1 do
-  begin
-    sTipoCampo := DBISAMQuery2.Fields[i].ClassName;
-    sTipoCampo := 'ft'+copy(sTipoCampo,2, length(sTipoCampo)-6)  ; //ftString     TStringField
-    ScriptDelphiForm.Memo1.Lines.Add('    FieldDefs.Add('+QuotedStr(DBISAMQuery2.Fields[i].FullName) +', '+sTipoCampo+', '+inttoStr(DBISAMQuery2.Fields[i].Size)+',False);');
-  end;
-
-  ScriptDelphiForm.Memo1.Lines.Add('    //**Index');
-  ScriptDelphiForm.Memo1.Lines.Add('    IndexDefs.Clear;');
-  ScriptDelphiForm.Memo1.Lines.Add('    IndexDefs.Add('+QuotedStr('')+','+QuotedStr('Id')+',[ixPrimary,ixUnique]);');
-  ScriptDelphiForm.Memo1.Lines.Add('    //IndexDefs.Add('+QuotedStr('PorDescricao')+','+QuotedStr('Descricao')+',[ixCaseInsensitive]);');
-  ScriptDelphiForm.Memo1.Lines.Add('    CreateTable;');
-  ScriptDelphiForm.Memo1.Lines.Add('    Open;');
-  ScriptDelphiForm.Memo1.Lines.Add('  end;');
-  ScriptDelphiForm.Memo1.Lines.Add('end;');
-
-
-  ScriptDelphiForm.Showmodal;
-
-end;
-
-procedure TSQLForm.Button4Click(Sender: TObject);
-var
-  i: integer;
-  sTipoCampo : String;
-begin
-  ScriptDelphiForm.Memo1.Lines.Clear;
-  ScriptDelphiForm.Memo1.Lines.Add('uses fsFuncsFile, dbisamtb;');
-  ScriptDelphiForm.Memo1.Lines.Add('');
-  ScriptDelphiForm.Memo1.Lines.Add('procedure TForm1.OpenTempTables;');
-  ScriptDelphiForm.Memo1.Lines.Add('begin');
-  ScriptDelphiForm.Memo1.Lines.Add('  with mem_DBISAMTable do');
-  ScriptDelphiForm.Memo1.Lines.Add('  begin');
-  ScriptDelphiForm.Memo1.Lines.Add('    Close;');
-  ScriptDelphiForm.Memo1.Lines.Add('    if Exists then');
-  ScriptDelphiForm.Memo1.Lines.Add('      DeleteTable;');
-  ScriptDelphiForm.Memo1.Lines.Add('    Exclusive := True;');
-  ScriptDelphiForm.Memo1.Lines.Add('    DatabaseName := GetSystemPath(sysTempPath);');
-  ScriptDelphiForm.Memo1.Lines.Add('    TableName := GetUniqueFileName(DatabaseName);');
-  ScriptDelphiForm.Memo1.Lines.Add('    if Exists then');
-  ScriptDelphiForm.Memo1.Lines.Add('      DeleteTable;');
-
-  ScriptDelphiForm.Memo1.Lines.Add('  //**campos');
-  ScriptDelphiForm.Memo1.Lines.Add('    FieldDefs.Clear;');
-  ScriptDelphiForm.Memo1.Lines.Add('    FieldDefs.Add('+QuotedStr('Id')+', ftAutoInc, 0,False);');
-
-  for i := 0 to DBISAMQuery3.FieldCount-1 do
-  begin
-    sTipoCampo := DBISAMQuery3.Fields[i].ClassName;
-    sTipoCampo := 'ft'+copy(sTipoCampo,2, length(sTipoCampo)-6)  ; //ftString     TStringField
-    ScriptDelphiForm.Memo1.Lines.Add('    FieldDefs.Add('+QuotedStr(DBISAMQuery3.Fields[i].FullName) +', '+sTipoCampo+', '+inttoStr(DBISAMQuery3.Fields[i].Size)+',False);');
-  end;
-
-  ScriptDelphiForm.Memo1.Lines.Add('    //**Index');
-  ScriptDelphiForm.Memo1.Lines.Add('    IndexDefs.Clear;');
-  ScriptDelphiForm.Memo1.Lines.Add('    IndexDefs.Add('+QuotedStr('')+','+QuotedStr('Id')+',[ixPrimary,ixUnique]);');
-  ScriptDelphiForm.Memo1.Lines.Add('    //IndexDefs.Add('+QuotedStr('PorDescricao')+','+QuotedStr('Descricao')+',[ixCaseInsensitive]);');
-  ScriptDelphiForm.Memo1.Lines.Add('    CreateTable;');
-  ScriptDelphiForm.Memo1.Lines.Add('    Open;');
-  ScriptDelphiForm.Memo1.Lines.Add('  end;');
-  ScriptDelphiForm.Memo1.Lines.Add('end;');
-
-  ScriptDelphiForm.Showmodal;
 end;
 
 procedure TSQLForm.Button5Click(Sender: TObject);
@@ -700,7 +841,7 @@ procedure TSQLForm.cbxBasePropertiesChange(Sender: TObject);
 begin
   cbxTabela.Text:= '';
   cdsConfigBase.Locate('base',cbxBase.Text,[]);
-  carregaTabela('',cdsConfigBase.FieldByName('Path').AsString);
+  LoadTabelsToWinControlCombo('',cdsConfigBase.FieldByName('Path').AsString);
 end;
 
 procedure TSQLForm.ckbBloqueado1Click(Sender: TObject);
@@ -716,6 +857,11 @@ end;
 procedure TSQLForm.ckbBloqueado3Click(Sender: TObject);
 begin
   memSQL3.Enabled := not ckbBloqueado3.Checked;
+end;
+
+procedure TSQLForm.CreateTable2Click(Sender: TObject);
+begin
+  GeraCreateTable(DBISAMQuery1);
 end;
 
 procedure TSQLForm.cxButton1Click(Sender: TObject);
@@ -749,7 +895,6 @@ begin
     if cdsMenuSQL.Locate('tag',tag,[]) then
       cdsMenuSQL.Edit;
   end;
-
   cdsMenuSQLObjeto.AsInteger := 1;
   cdsMenuSQLSQL.Text         := memSQL1.Text;
   cdsMenuSQL.Post;
@@ -787,6 +932,80 @@ begin
   memSQL1.Text          := cdsMenuSQLSQL.AsString;
   btnApagarTag1.Tag     := TMenuItem(Sender).Tag;
   btnApagarTag1.Caption := 'Apagar Menu '+IntToStr(TMenuItem(Sender).Tag);
+end;
+
+procedure TSQLForm.Json1Click(Sender: TObject);
+var
+  _tabelas: string;
+begin
+  _tabelas := getTabelaSelect(memSQL1.Lines.Text, false);
+
+  geraJson(_tabelas, DBISAMQuery1);
+end;
+
+procedure TSQLForm.JSON2Click(Sender: TObject);
+var
+  _tabelas: string;
+begin
+  _tabelas := getTabelaSelect(memSQL1.Lines.Text, false);
+
+  geraJson(_tabelas, DBISAMQuery2);
+end;
+
+procedure TSQLForm.JSON3Click(Sender: TObject);
+var
+  _tabelas: string;
+begin
+  _tabelas := getTabelaSelect(memSQL1.Lines.Text, false);
+
+  geraJson(_tabelas, DBISAMQuery3);
+end;
+
+Procedure TSQLForm.geraJson(Tabelas:string;aDBISAMQuery:TDBISAMQuery);
+var
+  i: integer;
+  sNameCampo, sTipoCampo, _Value, _Linha: string;
+  ts : TFormatSettings;  //SysUtils
+begin
+  ts:=TFormatSettings.Create;
+  ts.ShortDateFormat:='yyy-MM-dd';
+  ts.DateSeparator:='-';
+  ts.TimeSeparator:=':';
+
+
+  ScriptDelphiForm.Clear;
+  ScriptDelphiForm.Add('{"'+Tabelas+'":');
+  for i := 0 to aDBISAMQuery.FieldCount-1 do
+  begin
+    sNameCampo := aDBISAMQuery.Fields[i].FullName;
+    sTipoCampo := ConvertFrom(aDBISAMQuery.Fields[i].ClassName);
+    _Value     := aDBISAMQuery.Fields[i]. AsString;
+
+    if LowerCase(sTipoCampo)='integer' then
+      _Linha    := '"'+sNameCampo+'":0,'
+    else
+    if LowerCase(sTipoCampo)='float' then
+      _Linha    := '"'+sNameCampo+'":0.0,'
+    else
+    if LowerCase(sTipoCampo)='boolean' then
+      _Linha    := '"'+sNameCampo+'":false,'
+    else
+    if LowerCase(sTipoCampo)='datetime' then
+      _Linha    := '"'+sNameCampo+'":"'+DatetimeToStr(aDBISAMQuery.Fields[i].AsDatetime, ts)+'",'
+    else
+       _Linha    := '"'+sNameCampo+'":"'+_Value+'",';
+
+    if i=0 then
+      _Linha := '{'+_Linha;
+
+    if i = aDBISAMQuery.FieldCount-1 then
+      _Linha := copy(_Linha,1,length(_Linha)-1)  +'}';
+
+    ScriptDelphiForm.Add('        '+_Linha);
+  end;
+
+  ScriptDelphiForm.Add('     }');
+  ScriptDelphiForm.Showmodal;
 end;
 
 procedure TSQLForm.btnAdic2Click(Sender: TObject);
@@ -932,6 +1151,8 @@ begin
   bEncontrou := False;
   if (trim(memSQL1.Lines.Text)<>'') and (memSQL1.Enabled) then
   begin
+    DBISAMDatabase1.Open;
+
     DBISAMQuery1.Close;
     DBISAMQuery1.SQL.Clear;
     DBISAMQuery1.SQL.Add(memSQL1.Lines.Text);
@@ -1112,8 +1333,6 @@ begin
     btnApagarTag1.Tag     := 0;
     memSQL1.Lines.Clear;
   end;
-
-
 end;
 
 procedure TSQLForm.cxPageControl1Change(Sender: TObject);
@@ -1170,7 +1389,6 @@ begin
   end;
 end;
 
-
 Procedure TSQLForm.definiConexaoPara3Bases(psDirectory: String;pbNumBase: integer);
 var
   MyStringList: TStrings;
@@ -1179,6 +1397,7 @@ Begin
   case pbNumBase of
     1: begin
         DBISAMDatabase1.Connected:= False;
+        DBISAMDatabase1.DatabaseName := 'Base1';
         DBISAMDatabase1.Directory:= psDirectory;
         DBISAMDatabase1.Connected:= true;
 
@@ -1186,6 +1405,7 @@ Begin
        end;
     2: begin
          DBISAMDatabase2.Connected:= False;
+         DBISAMDatabase2.DatabaseName := 'Base2';
          DBISAMDatabase2.Directory:= psDirectory;
          DBISAMDatabase2.Connected:= true;
 
@@ -1193,6 +1413,7 @@ Begin
        end;
     3: Begin
          DBISAMDatabase3.Connected:= False;
+         DBISAMDatabase3.DatabaseName := 'Base3';
          DBISAMDatabase3.Directory:= psDirectory;
          DBISAMDatabase3.Connected:= true;
 
@@ -1315,12 +1536,12 @@ begin
   close;
 end;
 
-Procedure TSQLForm.carregaListaDaBase(base:String);
+Procedure TSQLForm.LoadBaseListToComboBox(base:String);
 var
   _caminho: string;
 begin
-  fIndex := -1;
-  _caminho   := ExtractFilePath(ParamStr(0))+'\ConfgBase.xml';
+  fIndex     := -1;
+  _caminho   := ExtractFilePath(ParamStr(0))+'ConfgBase.xml';
   cdsConfigBase.Close;
   cdsConfigBase.Active:= true;
 
@@ -1348,7 +1569,7 @@ begin
  ckbBloqueado3.Checked := not cdsConfiguracaockbBloqueado3.AsBoolean;
 end;
 
-Procedure TSQLForm.carregaTabela(psTabela, psDirectory: String);
+Procedure TSQLForm.LoadTabelsToWinControlCombo(psTabela, psDirectory: String);
 var
   MyStringList: TStrings;
   x: Integer;
@@ -1446,14 +1667,14 @@ var
 begin
   firstWord := '';
   for x := 1 to Length(pFrase) do
-    if pFrase[x]<>' ' then
+    if (pFrase[x]<>' ') and  (pFrase[x]<>#$D) and  (pFrase[x]<>'.')  then
        firstWord := firstWord + pFrase[x]
     else
       Break;
   Result := firstWord;
 end;
 
-function TSQLForm.getTabelaSelect(sql:string): string;
+function TSQLForm.getTabelaSelect(sql:string;aExt:Boolean=true): string;
 var
   sqlmin, //para trabalhar com letras minusculas e a original ficar com size original.
   tabela: string;
@@ -1472,7 +1693,10 @@ begin
     tabela := trim(getFirsWord(tabela));
   end;
 
-  Result := tabela+'.dat';
+  if aExt then
+    Result := tabela+'.dat'
+  else
+    Result := tabela;
 end;
 
 procedure TSQLForm.LimparControlos();
